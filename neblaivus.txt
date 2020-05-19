@@ -1,0 +1,27 @@
+
+
+CREATE OR REPLACE FUNCTION note_update()
+RETURNS trigger AS
+$BODY$
+BEGIN
+    UPDATE people SET note='2000-01-01' WHERE comment='Fuzzy';
+    RETURN NEW; 
+END
+$BODY$ language 'plpgsql';
+
+CREATE TRIGGER trigger_note_update
+BEFORE UPDATE ON people 
+FOR EACH ROW EXECUTE PROCEDURE note_update();
+
+DROP TABLE IF EXISTS people CASCADE;
+CREATE TABLE people (comment VARCHAR(100), note TIMESTAMP DEFAULT NOW());
+ 
+INSERT INTO people (comment, note)
+VALUES('Padma', '1983-11-11');
+VALUES('Larry', '1943-12-25');
+INSERT INTO people(comment)
+VALUES('Dizzy');
+select pg_sleep(0.5);
+UPDATE people SET comment='Fuzzy' WHERE comment='Dizzy';
+ 
+SELECT comment, note FROM people;

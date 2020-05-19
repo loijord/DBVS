@@ -1,0 +1,126 @@
+CREATE TABLE Knyga (
+    ISBN           CHAR(13)    NOT NULL,
+    Pavadinimas  VARCHAR(32) NOT NULL,
+    Leidykla       CHAR(12)    NOT NULL,
+    Metai       SMALLINT    NOT NULL CONSTRAINT LeidimoMetai 
+                                         CHECK(Metai > 1900 AND Metai < EXTRACT(YEAR FROM CURRENT_DATE) + 1),
+    Puslapiai   SMALLINT    NOT NULL CONSTRAINT PuslapiuSkaicius CHECK(Puslapiai > 0 AND Puslapiai < 2000),
+    Verte       DECIMAL(5,2) CONSTRAINT VertesDydis CHECK(Verte > 0 AND Verte < 1000),
+    PRIMARY KEY (ISBN)
+);
+
+CREATE TABLE Autorius (
+    ISBN        CHAR(13)    NOT NULL,
+    Vardas      CHAR(12)    NOT NULL,
+    Pavarde     VARCHAR(20) NOT NULL,
+    PRIMARY KEY (ISBN,Vardas,Pavarde),
+    CONSTRAINT IKyga FOREIGN KEY (ISBN) REFERENCES Knyga ON DELETE CASCADE ON UPDATE RESTRICT
+);
+
+CREATE TABLE Skaitytojas (
+    Nr          INTEGER     NOT NULL,
+    AK          CHAR(11)    NOT NULL,
+    Vardas      CHAR(12)    NOT NULL,
+    Pavarde     VARCHAR(20) NOT NULL,
+    Gimimas     DATE        NOT NULL,
+    Adresas     VARCHAR(32),
+    PRIMARY KEY (Nr)
+);
+
+CREATE TABLE Egzempliorius (
+    Nr            INTEGER     NOT NULL,
+    ISBN        CHAR(13)    NOT NULL,
+    Skaitytojas INTEGER,
+    Paimta       DATE,
+    Grazinti     DATE,
+    PRIMARY KEY (Nr),
+    CONSTRAINT IKnyga FOREIGN KEY (ISBN)             REFERENCES Knyga       ON DELETE CASCADE ON UPDATE RESTRICT,
+    CONSTRAINT ISkaitytoja FOREIGN KEY (Skaitytojas) REFERENCES Skaitytojas ON DELETE RESTRICT ON UPDATE RESTRICT,
+    CONSTRAINT  GrazintiVeliau CHECK(Grazinti >= Paimta) 
+);
+
+INSERT INTO Knyga(ISBN, Pavadinimas, Leidykla, Metai, Puslapiai, Verte) VALUES
+    ('9998-01-101-9','Duomenu bazes', 'Baltoji', 2005, 212, NULL ),
+    ('9998-01-102-7','Programavimo kalbos', 'Baltoji', 2006, 401, 22.50),
+    ('9999-02-202-2','Operacines sistemos', 'Juodoji', 2006, 356, 19.90),
+    ('9999-02-203-0','Transliavimo metodai', 'Juodoji', 2007, 495, 30.00),
+    ('9998-01-103-5','Objektinis programavimas','Baltoji', 2006, 356, 19.90),
+    ('9997-03-303-5','Informacines sistemos', 'Raudonoji', 2006, 254, 15.50),
+    ('9998-01-104-3','Kompiuteriu tinklai', 'Baltoji', 2007, 455, 35.20);
+
+INSERT INTO Autorius(ISBN,Vardas,Pavarde) VALUES
+    ('9998-01-101-9', 'Jonas', 'Jonaitis' ),
+    ('9998-01-101-9', 'Petras', 'Petraitis' ),
+    ('9998-01-102-7', 'Pijus', 'Jonaitis' ),
+    ('9999-02-202-2', 'Pijus', 'Jonaitis' ),
+    ('9999-02-202-2', 'Onute', 'Jonaityte' ),
+    ('9999-02-202-2', 'Jonas', 'Petraitis' ),
+    ('9999-02-202-2', 'Jonas', 'Jonaitis' ),
+    ('9999-02-203-0', 'Juozas', 'Juodakis' ),
+    ('9999-02-203-0', 'Antanas', 'Antanaitis'),
+    ('9998-01-103-5', 'Maryte', 'Grazulyte' ),
+    ('9998-01-103-5', 'Janina', 'Jonaityte' ),
+    ('9997-03-303-5', 'Simas', 'Simaitis' ),
+    ('9997-03-303-5', 'Petras', 'Petraitis' ),
+    ('9997-03-303-5', 'Simas', 'Baltakis' ),
+    ('9998-01-104-3', 'Jonas', 'Petraitis' );
+
+    
+INSERT INTO Skaitytojas(Nr, AK, Vardas, Pavarde, Gimimas, Adresas) VALUES
+    (1000, '50101010222', 'Jonas', 'Petraitis', '2001-01-01', 'Tiesioji 1-10' ),
+    (1001, '39902200102', 'Jonas', 'Onaitis', '1999-02-28', 'Lenktoji 20' ),
+    (1010, '49903021111', 'Milda', 'Onaityte', '1999-03-02', 'Didzioji 21-5' ),
+    (1015, '49906301011', 'Onute', 'Petraityte','1999-06-30', 'Didzioji 21-5' ),
+    (1021, '39905301031', 'Petras', 'Jonaitis', '1999-05-30', 'Mazoji 1' ),
+    (1032, '39912310031', 'Tadas', 'Onaitis', '1999-12-31', 'Tiesioji 12' ),
+    (1033, '49911300131', 'Grazina', 'Petraityte','1999-11-30', 'Tiesioji 1-10' ),
+    (1011, '50111010055', 'Jonas', 'Adomaitis','2001-01-01', 'Mazoji 1' );
+
+INSERT INTO Egzempliorius(Nr, ISBN, Skaitytojas, Paimta, Grazinti) VALUES
+    (32101, '9998-01-101-9', NULL, NULL, NULL ),
+    (32102, '9998-01-101-9', NULL, NULL, NULL ),
+    (32103, '9998-01-101-9', NULL, NULL, NULL ),
+    (32104, '9998-01-101-9', 1000, '2019-10-02', '2019-10-05' ),
+    (32105, '9998-01-101-9', 1010, '2019-09-04', '2019-10-04' ),
+    (32106, '9998-01-101-9', 1021, '2019-09-14', '2019-10-04' ),
+    (32107, '9998-01-101-9', NULL, NULL, NULL ),
+    (32108, '9998-01-101-9', 1001, '2019-10-02', '2019-10-14' ),
+    (32109, '9998-01-101-9', 1032, '2019-09-20', '2019-10-05' ),
+
+    (32200, '9998-01-102-7', NULL, NULL, NULL ),
+    (32201, '9998-01-102-7', 1021, '2019-10-02', '2019-11-04' ),
+
+    (32301, '9999-02-202-2', 1000, '2019-10-02', '2019-10-15' ),
+    (32302, '9999-02-202-2', 1021, '2019-09-14', '2019-10-04' ),
+    (32303, '9999-02-202-2', NULL, NULL, NULL ),
+
+    (32330, '9999-02-203-0', NULL, NULL, NULL ),
+    (32331, '9999-02-203-0', NULL, NULL, NULL ),
+    (32332, '9999-02-203-0', 1010, '2019-09-14', '2019-10-05' ),
+    (32333, '9999-02-203-0', 1015, '2019-10-14', '2019-11-05' ),
+
+    (32401, '9998-01-103-5', NULL, NULL, NULL ),
+    (32402, '9998-01-103-5', 1032, '2019-09-20', '2019-10-05' ),
+    (32403, '9998-01-103-5', NULL, NULL, NULL ),
+    (32404, '9998-01-103-5', NULL, NULL, NULL ),
+    (32405, '9998-01-103-5', NULL, NULL, NULL ),
+    (32406, '9998-01-103-5', 1010, '2019-09-14', '2019-10-04' ),
+
+    (32501, '9997-03-303-5', 1010, '2019-10-14', '2019-11-04' ),
+    (32502, '9997-03-303-5', 1032, '2019-09-20', '2019-10-04' ),
+    (32503, '9997-03-303-5', 1015, '2019-09-20', '2019-10-05' ),
+    (32504, '9997-03-303-5', 1001, '2019-10-06', '2019-11-05' ),
+
+    (32601, '9998-01-104-3', NULL, NULL, NULL ),
+    (32602, '9998-01-104-3', NULL, NULL, NULL ),
+    (32603, '9998-01-104-3', NULL, NULL, NULL ),
+    (32604, '9998-01-104-3', NULL, NULL, NULL ),
+    (32605, '9998-01-104-3', NULL, NULL, NULL );
+    
+SELECT SUBSTRING(Egzempliorius.ISBN, 1, 4) AS ISBN_pradzia,
+       COUNT(Egzempliorius.Nr) AS egzemplioriai,
+       COUNT(Egzempliorius.Nr) AS knygos
+FROM Egzempliorius,
+     Knyga
+WHERE Egzempliorius.ISBN = Knyga.ISBN
+GROUP BY ISBN_pradzia;
