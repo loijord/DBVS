@@ -1,6 +1,6 @@
 Visa mano patirtis, kurią įgyjau dirbdamas su duomenų bazėmis, yra tokia:
 
-1\. 75\% įveiktų uždavinių (t.y. virš 60) [Codesignal platformoje](https://codesignal.com/) įveiktų uždavinių su MYSQL.
+1\. 75\% su MYSQL įveiktų uždavinių (t.y. virš 60) [Codesignal platformoje](https://codesignal.com/).
 
 2\. Išklausytas 20 val. trukmės kursas iš Udemy: [The Ultimate MySQL Bootcamp: Go from SQL Beginner to Expert](https://www.udemy.com/course/the-ultimate-mysql-bootcamp-go-from-sql-beginner-to-expert/)
 
