@@ -10,3 +10,4 @@ Visa mano patirtis, kurią įgyjau dirbdamas su duomenų bazėmis, yra tokia:
 
 * [Pirmas laboratorinis darbas](DBVS1.ipynb)
 * [Antras laboratorinis darbas](DBVS2.ipynb)
+* [Papildomai: instagramo duomenų bazės pavyzdys](DBVS3.ipynb)
