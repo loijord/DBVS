@@ -8,6 +8,6 @@ Visa mano patirtis, kurią įgyjau dirbdamas su duomenų bazėmis, yra tokia:
 
 3\. Laboratoriniai darbai pagal MIF kursą ***Duomenų bazių valdymo sistemos***
 
-* [Pirmas laboratorinis darbas](DBVS1.ipynb)
-* [Antras laboratorinis darbas](DBVS2.ipynb)
-* [Papildomai: instagramo duomenų bazės pavyzdys](DBVS3.ipynb)
+* [Pirmas laboratorinis darbas](https://nbviewer.jupyter.org/github/loijord/DBVS/blob/master/DBVS1.ipynb)
+* [Antras laboratorinis darbas](https://nbviewer.jupyter.org/github/loijord/DBVS/blob/master/DBVS2.ipynb)
+* [Papildomai: instagramo duomenų bazės pavyzdys](https://nbviewer.jupyter.org/github/loijord/DBVS/blob/master/DBVS3.ipynb)
